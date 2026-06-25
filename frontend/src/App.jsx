@@ -161,13 +161,13 @@ export default function App() {
       <header className="border-b border-slate-200 bg-white sticky top-0 z-20 shadow-sm backdrop-blur-md bg-white/90">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 bg-slate-900 rounded-xl flex items-center justify-center shadow-md">
+            <div className="w-9 h-9 bg-neutral-900 rounded-xl flex items-center justify-center shadow-md">
               <Package size={18} className="text-white" />
             </div>
             <div>
               <h1 className="text-base font-bold text-slate-900 tracking-tight">Product Viewer</h1>
               <p className="text-[11px] text-slate-500 font-mono flex items-center gap-1 mt-0.5">
-                <Database size={10} /> Client-Cached Memory Pipeline Active
+                <Database size={10} /> product management
               </p>
             </div>
           </div>
@@ -217,13 +217,13 @@ export default function App() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5 mb-6 px-4 py-3 bg-slate-900 text-slate-100 rounded-xl text-xs shadow-sm font-mono">
+        <div className="flex items-center gap-2.5 mb-1 px-4 py-3 text-slate-100 rounded-xl text-xs shadow-sm font-mono">
           <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse flex-shrink-0" />
-          <span>Client Cache Status: Pool contains {products.length.toLocaleString()} items rows. Rendering index chunk ({screenIndex * PAGE_SIZE} - {(screenIndex + 1) * PAGE_SIZE}).</span>
+          <span className="text-black"> Each page consisits of maximum {PAGE_SIZE} rows.</span>
         </div>
 
         {apiDown && (
-          <div className="flex items-start gap-3 mb-6 px-4 py-4 bg-amber-50 border border-amber-200 rounded-xl">
+          <div className="flex items-start gap-3 mb- px-4 py-4 bg-amber-50 border border-amber-200 rounded-xl">
             <AlertCircle size={18} className="text-amber-600 mt-0.5" />
             <p className="text-sm font-bold text-amber-900">Backend Server Offline. Make sure your local engine is up.</p>
           </div>
@@ -232,17 +232,35 @@ export default function App() {
         {error && !apiDown && (
           <div className="flex items-center gap-2 mb-6 px-4 py-3 bg-rose-50 border border-rose-100 rounded-xl text-sm font-medium text-rose-800"><AlertCircle size={16} />{error}</div>
         )}
+        <div className="flex gap-3 h-10 justify-end px-5 py-1">
+              <button
+                disabled={screenIndex === 0 || loading}
+                onClick={handlePrevScreen}
+                className="inline-flex items-center gap-1 px-4 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-xl hover:bg-slate-50 disabled:hover:bg-white disabled:opacity-30 disabled:cursor-not-allowed transition-all shadow-sm"
+              >
+                &larr; 
+              </button>
+              <button
+                disabled={(!hasMore && (screenIndex + 1) * PAGE_SIZE >= products.length) || loading}
+                onClick={handleNextScreen}
+                className="inline-flex items-center gap-1 px-4 py-2 text-xs font-bold text-white bg-neutral-700 border border-transparent rounded-xl hover:bg-slate-800 disabled:hover:bg-slate-900 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-sm"
+              >
+               &rarr;
+              </button>
+            </div>
 
         <div className="bg-white border border-slate-200 rounded-2xl shadow-sm">
+          
           <div className="overflow-x-auto">
+            
             <table className="w-full text-sm text-slate-600">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50/70 text-slate-500 font-medium">
                   <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase"><div className="flex items-center gap-1.5"><Package size={13} />Item Label</div></th>
                   <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase"><div className="flex items-center gap-1.5"><Tag size={13} />Category Group</div></th>
                   <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase"><div className="flex items-center gap-1.5"><DollarSign size={13} />Price Tier</div></th>
-                  <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase"><div className="flex items-center gap-1.5"><Clock size={13} />Timestamp Ingress</div></th>
-                  <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase font-mono">BSON UUID</th>
+                  <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase"><div className="flex items-center gap-1.5"><Clock size={13} />Created At</div></th>
+                  <th className="px-6 py-3.5 text-left text-xs font-semibold uppercase font-mono">Product ID</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -260,7 +278,7 @@ export default function App() {
                         <td className="px-6 py-4"><span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${style.bg}`}>{product.category}</span></td>
                         <td className="px-6 py-4 font-mono font-bold text-slate-700">{formatPrice(product.price)}</td>
                         <td className="px-6 py-4 text-slate-400 text-xs font-medium">{formatDate(product.created_at)}</td>
-                        <td className="px-6 py-4 font-mono text-[11px] text-slate-400 select-all">{id}</td>
+                        <td className="px-6 py-4 font-mono text-[11px] text-slate-400 select-all">{product.productId}</td>
                       </tr>
                     );
                   })
