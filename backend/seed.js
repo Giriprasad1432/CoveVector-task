@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import connectDB from "./config/db.js";
 import product from "./models/productModel.js";
+import "dotenv/config";
 
 await connectDB();
 
