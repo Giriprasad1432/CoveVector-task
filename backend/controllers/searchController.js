@@ -30,7 +30,7 @@ export const getProducts = async (req, res) => {
         }
 
         const products = await product.find(filter)
-            .sort({ category: 1, created_at: -1, _id: -1 })
+            .sort({ created_at: -1, _id: -1 })
             .collation({ locale: 'en', strength: 2 })
             .limit(limit + 1)
             .lean();

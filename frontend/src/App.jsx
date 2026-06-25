@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Search, ChevronRight, RefreshCw, Package, Tag, DollarSign, Clock, AlertCircle, Database } from "lucide-react";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = import.meta.env.VITE_STOREX_API || "http://localhost:3000";
 const PAGE_SIZE = 30;
 
 const CATEGORIES_COLORS = {
