@@ -199,7 +199,7 @@ export default function App() {
               )}
             </div>
             <button type="submit" className="px-5 py-2.5 bg-neutral-700 text-white text-sm font-medium rounded-xl hover:bg-slate-800 shadow-sm">
-              Query
+              Search
             </button>
           </form>
 
